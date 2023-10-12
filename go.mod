@@ -1,10 +1,11 @@
-module github.com/rahmanfadhil/gin-bookstore
+module github.com/bashkirian/gin-service
 
 go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/jinzhu/gorm v1.9.16
+	github.com/bashkirian/gin-service v0.0.0-20211030042304-6776a8c68f28
 )
 
 require (

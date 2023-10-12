@@ -1,6 +1,4 @@
-# Bookstore REST API using Gin and Gorm
-
-Read the [article](https://blog.logrocket.com/how-to-build-a-rest-api-with-golang-using-gin-and-gorm/).
+# REST API using Gin and Gorm
 
 How to use:
 
