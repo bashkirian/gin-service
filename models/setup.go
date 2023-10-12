@@ -14,15 +14,13 @@ func ConnectDatabase() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	database.AutoMigrate(&Book{})
 	database.AutoMigrate(&Bank{})
 	bank := Bank{Name: "Vernadsky", 
-	LocationLat: 30.0, 
-	LocationLan: 20.0 }
+	LocationLat: "30.0", 
+	LocationLan: "20.0" }
 	database.Create(&bank)
-	database.AutoMigrate(&Review{})
-	database.AutoMigrate(&Client{})
-	database.AutoMigrate(&Service{})
-	database.AutoMigrate(&BankService{})
+	database.AutoMigrate(&Review{}, &Client{}, &Service{}, &BankService{}, &Review{}, &Client{})
+	database.Model(&BankService{}).AddForeignKey("bank_id", "banks(id)", "RESTRICT", "RESTRICT")
+	
 	DB = database
 }

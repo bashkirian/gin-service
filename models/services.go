@@ -1,6 +1,11 @@
 package models
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 type Service struct {
-	id uint `gorm:"primary_key"`
-	description string
+	gorm.Model
+	ID int `gorm:"primary_key"`
+	Description string
 }

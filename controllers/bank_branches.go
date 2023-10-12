@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"net/http"
-
+	"strconv"
 	"github.com/gin-gonic/gin"
 	"github.com/bashkirian/gin-service/models"
 )
@@ -46,15 +46,19 @@ func FindBank(c *gin.Context) {
 //create review of bank branch
 func CreateReview(c *gin.Context) {
 	// Validate input
-	var input ReviewPost
+	var input models.ReviewPost
 	if err := c.ShouldBindJSON(&input); err != nil {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	  return
 	}
   
 	// Create review
-	book := models.Book{Title: input.Title, Author: input.Author}
-	models.DB.Create(&book)
+	bankid, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		panic("some error")
+	}
+	review := models.Review{Content: input.Content, BankID: bankid}
+	models.DB.Create(&review)
   
-	c.JSON(http.StatusOK, gin.H{"data": book})
+	c.JSON(http.StatusOK, gin.H{"data": review})
   }
