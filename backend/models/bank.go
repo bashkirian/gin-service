@@ -1,8 +1,19 @@
 package models
 
 type Bank struct {
-	ID    int   `json:"id"`
-	Name  string `json:"name"`
-	Lat string `json:"lat"`
-	Lan string `json:"lon"`
+	ID int
+	Name string `json:"salePointName" db:"salePointName"`
+	Address string `json:"address" db:"address"`
+	Status string `json:"status" db:"status"`
+	Rko string `json:"rko" db:"rko"`
+	OfficeType string `json:"officeType" db:"officeType"`
+	SalePointFormat string `json:"salePointFormat" db:"salePointFormat"`
+	SuoAvailability string `json:"suoAvailability" db:"suoAvailability"`
+	HasRamp string `json:"hasRamp" db:"hasRamp"`
+	Latitude float64 `json:"latitude" db:"latitude"`
+	Longitude float64 `json:"longitude" db:"longitude"`
+	MetroStation string `json:"metroStation" db:"metroStation"`
+	Distance int64 `json:"distance" db:"distance"`
+	Kep bool `json:"kep" db:"kep"`
+	MyBranch bool `json:"myBranch" db:"myBranch"`
 }

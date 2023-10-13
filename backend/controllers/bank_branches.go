@@ -12,11 +12,11 @@ import (
 func FindBanks(c *gin.Context) {
 	// Get model if exist
 	var banks []*models.Bank
-	rows, err := models.DB.Query("SELECT id, name, lat, lon FROM banks;") 
+	rows, err := models.DB.Query("SELECT id, salepointname, latitude, longitude FROM banks;") 
 	models.CheckError(err)
 	for rows.Next() {
 		b := new(models.Bank)
-		err = rows.Scan(&b.ID, &b.Lat, &b.Name, &b.Lan)
+		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
 		models.CheckError(err)
 		banks = append(banks, b)
 	}
@@ -29,12 +29,12 @@ func FindBanks(c *gin.Context) {
 func FindBank(c *gin.Context) {
 	// Get model if exist
 	var bank *models.Bank
-	selectStatement := `SELECT id, name, lat, lon FROM banks WHERE id = $1`
-	rows, err := models.DB.Query(selectStatement, 2) 
+	selectStatement := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
+	rows, err := models.DB.Query(selectStatement, c.Param("id")) 
 	models.CheckError(err)
 	for rows.Next() {
 		b := new(models.Bank)
-		err = rows.Scan(&b.ID, &b.Lat, &b.Name, &b.Lan)
+		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
 		models.CheckError(err)
 		bank = b
 		models.CheckError(rows.Err())

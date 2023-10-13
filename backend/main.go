@@ -18,7 +18,7 @@ func main() {
 	r.GET("/branches/:id", controllers.FindBank)
 	//r.POST("branches/:id/review", controllers.CreateReview)
 	// Map
-	//r.GET("/map/route", controllers.FindRoute)
+	r.GET("/map/route", controllers.FindRoute)
 	// Run the server
 	r.Run()
 }
