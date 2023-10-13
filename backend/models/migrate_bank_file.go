@@ -5,84 +5,85 @@ import (
     _ "fmt"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"os"
 )
 
-var str = `[
-    {
-        "salePointName": "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-        "address": "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",        "status": "открытая",
-        "openHours": [
-            {
-                "days": "пн",
-                "hours": "09:00-18:00"
-            },
-            {
-                "days": "вт",
-                "hours": "09:00-18:00"
-            },
-            {
-                "days": "ср",
-                "hours": "09:00-18:00"
-            },
-            {
-                "days": "чт",
-                "hours": "09:00-18:00"
-            },
-            {
-                "days": "пт",
-                "hours": "09:00-17:00"
-            },
-            {
-                "days": "сб",
-                "hours": "выходной"
-            },
-            {
-                "days": "вс",
-                "hours": "выходной"
-            }
-        ],
-        "rko": "есть РКО",        "openHoursIndividual": [
-            {
-                "days": "пн",
-                "hours": "09:00-20:00"
-            },
-            {
-                "days": "вт",
-                "hours": "09:00-20:00"
-            },
-            {
-                "days": "ср",
-                "hours": "09:00-20:00"
-            },
-            {
-                "days": "чт",
-                "hours": "09:00-20:00"
-            },
-            {
-                "days": "пт",
-                "hours": "09:00-20:00"
-            },
-            {
-                "days": "сб",
-                "hours": "10:00-17:00"
-            },
-            {
-                "days": "вс",
-                "hours": "выходной"
-            }
-        ],
-        "officeType": "Да (Зона Привилегия)",
-        "salePointFormat": "Универсальный",
-        "suoAvailability": "Y",
-        "hasRamp": "N",
-        "latitude": 56.184479,
-        "longitude": 36.984314,
-        "metroStation": null,
-        "distance": 62105,
-        "kep": true,
-        "myBranch": false
-    }
-]`
+// var str = `[
+//     {
+//         "salePointName": "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
+//         "address": "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",        "status": "открытая",
+//         "openHours": [
+//             {
+//                 "days": "пн",
+//                 "hours": "09:00-18:00"
+//             },
+//             {
+//                 "days": "вт",
+//                 "hours": "09:00-18:00"
+//             },
+//             {
+//                 "days": "ср",
+//                 "hours": "09:00-18:00"
+//             },
+//             {
+//                 "days": "чт",
+//                 "hours": "09:00-18:00"
+//             },
+//             {
+//                 "days": "пт",
+//                 "hours": "09:00-17:00"
+//             },
+//             {
+//                 "days": "сб",
+//                 "hours": "выходной"
+//             },
+//             {
+//                 "days": "вс",
+//                 "hours": "выходной"
+//             }
+//         ],
+//         "rko": "есть РКО",        "openHoursIndividual": [
+//             {
+//                 "days": "пн",
+//                 "hours": "09:00-20:00"
+//             },
+//             {
+//                 "days": "вт",
+//                 "hours": "09:00-20:00"
+//             },
+//             {
+//                 "days": "ср",
+//                 "hours": "09:00-20:00"
+//             },
+//             {
+//                 "days": "чт",
+//                 "hours": "09:00-20:00"
+//             },
+//             {
+//                 "days": "пт",
+//                 "hours": "09:00-20:00"
+//             },
+//             {
+//                 "days": "сб",
+//                 "hours": "10:00-17:00"
+//             },
+//             {
+//                 "days": "вс",
+//                 "hours": "выходной"
+//             }
+//         ],
+//         "officeType": "Да (Зона Привилегия)",
+//         "salePointFormat": "Универсальный",
+//         "suoAvailability": "Y",
+//         "hasRamp": "N",
+//         "latitude": 56.184479,
+//         "longitude": 36.984314,
+//         "metroStation": null,
+//         "distance": 62105,
+//         "kep": true,
+//         "myBranch": false
+//     }
+// ]`
 
 type BankSql struct {
 	Name string `json:"salePointName" db:"salePointName"`
@@ -102,16 +103,21 @@ type BankSql struct {
 }
 
 func MigrateDatabase() {
+	offices, err := os.ReadFile("migrations/offices.txt")
+	if err != nil {
+		log.Fatalln(err)
+	}
 	db, err := sqlx.Connect("postgres", "host = localhost user=postgres dbname=goservice password=12345 sslmode=disable")
     if err != nil {
 		log.Fatalln(err)
 	}
 	var banks []BankSql
-    if err = json.Unmarshal([]byte(str), &banks); err != nil {
+    if err = json.Unmarshal([]byte(offices), &banks); err != nil {
         panic(err)
     }
     query := `INSERT INTO banks(salePointName, address, status, rko, officeType, salePointFormat, suoAvailability, hasRamp, latitude, longitude, metroStation, distance, kep, myBranch) 
-          VALUES(:salePointName, :address, :status, :rko, :officeType, :salePointFormat, :suoAvailability, :hasRamp, :latitude, :longitude, :metroStation, :distance, :kep, :myBranch)`
+          VALUES(:salePointName, :address, :status, :rko, :officeType, :salePointFormat, :suoAvailability, :hasRamp, :latitude, :longitude, :metroStation, :distance, :kep, :myBranch)
+		  ON CONFLICT DO NOTHING`
 
 	for _, bank := range banks {
 		_, err := db.NamedExec(query, bank)
