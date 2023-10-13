@@ -12,10 +12,10 @@ func main() {
 
 	// Connect to database
 	models.ConnectDatabase()
-
+	models.MigrateDatabase()
 	// Routes
 	r.GET("/branches", controllers.FindBanks)
-	//r.GET("/branches/:id", controllers.FindBank)
+	r.GET("/branches/:id", controllers.FindBank)
 	//r.POST("branches/:id/review", controllers.CreateReview)
 	// Map
 	//r.GET("/map/route", controllers.FindRoute)

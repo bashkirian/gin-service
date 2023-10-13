@@ -10,6 +10,7 @@ import (
 // GET /branches
 // Get all bank branches 
 func FindBanks(c *gin.Context) {
+	// Get model if exist
 	var banks []*models.Bank
 	rows, err := models.DB.Query("SELECT id, name, lat, lon FROM banks;") 
 	models.CheckError(err)
@@ -23,18 +24,23 @@ func FindBanks(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": banks})
 }
 
-// // GET /branches/:id
-// // Find bank branch
-// func FindBank(c *gin.Context) {
-// 	// Get model if exist
-// 	var bank models.Bank
-// 	if err := models.DB.Where("id = ?", c.Param("branch_id")).First(&bank).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bank not found!"})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, gin.H{"data": bank})
-// }
+// GET /branches/:id
+// Find bank branch
+func FindBank(c *gin.Context) {
+	// Get model if exist
+	var bank *models.Bank
+	selectStatement := `SELECT id, name, lat, lon FROM banks WHERE id = $1`
+	rows, err := models.DB.Query(selectStatement, 2) 
+	models.CheckError(err)
+	for rows.Next() {
+		b := new(models.Bank)
+		err = rows.Scan(&b.ID, &b.Lat, &b.Name, &b.Lan)
+		models.CheckError(err)
+		bank = b
+		models.CheckError(rows.Err())
+	}
+	c.JSON(http.StatusOK, gin.H{"data": bank})
+}
 
 // // GET branches/optimal
 // // Find nearest optimal branches
