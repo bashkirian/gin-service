@@ -1,13 +1,8 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type Bank struct {
-	gorm.Model
-	ID    int   `json:"id" gorm:"primary_key"`
+	ID    int   `json:"id"`
 	Name  string `json:"name"`
-	LocationLat string `json:"lat"`
-	LocationLan string `json:"lon"`
+	Lat string `json:"lat"`
+	Lan string `json:"lon"`
 }

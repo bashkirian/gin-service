@@ -2,25 +2,40 @@ package models
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"log"
+	"database/sql"
+	_ "github.com/lib/pq"
 )
 
-var DB *gorm.DB
+const (
+	host = "localhost"
+	port = 5432
+	user = "postgres"
+	password = "12345"
+	dbname = "goservice"
+)
+
+var DB *sql.DB
 
 func ConnectDatabase() {
-	database, err := gorm.Open("postgres", "port=5432 user=postgres password=12345 dbname=goservice sslmode=disable")
-
-	if err != nil {
-		fmt.Println(err)
-	}
-	database.AutoMigrate(&Bank{})
-	bank := Bank{Name: "Vernadsky", 
-	LocationLat: "30.0", 
-	LocationLan: "20.0" }
-	database.Create(&bank)
-	database.AutoMigrate(&Review{}, &Client{}, &Service{}, &BankService{}, &Review{}, &Client{})
-	database.Model(&BankService{}).AddForeignKey("bank_id", "banks(id)", "RESTRICT", "RESTRICT")
+	// connection string
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+         
+    // open database
+	var err error
+    DB, err = sql.Open("postgres", psqlconn)
+    CheckError(err)
+ 
+    // check DB
+    err = DB.Ping()
+    CheckError(err)
 	
-	DB = database
+    fmt.Println("Connected!")
+
+}
+ 
+func CheckError(err error) {
+    if err != nil {
+        log.Fatal(err)
+    }
 }
