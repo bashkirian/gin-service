@@ -5,41 +5,56 @@ import (
 	_ "strconv"
 	"github.com/gin-gonic/gin"
 	"github.com/bashkirian/gin-service/models"
+	"fmt"
 )
 
 // GET /branches
 // Get all bank branches 
-func FindBanks(c *gin.Context) {
+func FindBanks(c *gin.Context) error {
 	// Get model if exist
 	var banks []*models.Bank
 	rows, err := models.DB.Query("SELECT id, salepointname, latitude, longitude FROM banks;") 
-	models.CheckError(err)
+	if err != nil {
+		return fmt.Errorf("select: %w", err)
+	}
 	for rows.Next() {
 		b := new(models.Bank)
 		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
-		models.CheckError(err)
+		if err != nil {
+			return fmt.Errorf("rows scan: %w", err)
+		}
 		banks = append(banks, b)
 	}
-	models.CheckError(rows.Err())
+	if rows.Err() != nil {
+		return fmt.Errorf("rows: %w", err)
+	}
 	c.JSON(http.StatusOK, gin.H{"data": banks})
+	return nil
 }
 
 // GET /branches/:id
 // Find bank branch
-func FindBank(c *gin.Context) {
+func FindBank(c *gin.Context) error {
 	// Get model if exist
 	var bank *models.Bank
 	selectStatement := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
 	rows, err := models.DB.Query(selectStatement, c.Param("id")) 
-	models.CheckError(err)
+	if err != nil {
+		return fmt.Errorf("select bank: %w", err)
+	}
 	for rows.Next() {
 		b := new(models.Bank)
 		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
-		models.CheckError(err)
+		if err != nil {
+			return fmt.Errorf("scan bank: %w", err)
+		}
 		bank = b
-		models.CheckError(rows.Err())
+		if rows.Err() != nil {
+			return fmt.Errorf("rows: %w", err)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bank})
+	return nil
 }
 
 // // GET branches/optimal

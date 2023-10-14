@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	_ "strconv"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/bashkirian/gin-service/models"
 	"googlemaps.github.io/maps"
@@ -13,11 +14,11 @@ const apiKey = "AIzaSyDZ-FFbuQ0xhk1ArrZW8zZ8LdpUuIDsD0g"
 
 // GET /map/route
 // Get route from two points and distance 
-func FindRoute(c *gin.Context) {
+func FindRoute(c *gin.Context) error {
 	var points models.MapPointPayload
 	if err := c.ShouldBindJSON(&points); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		return fmt.Errorf("bind map json: %w", err)
 	}
 	origin := points.MapPoints[0].Latitude
 	origin += ", "
@@ -32,7 +33,8 @@ func FindRoute(c *gin.Context) {
 	}
 	resp, _, err := cont.Directions(context.Background(), r)
 	if err == nil {
-		panic("error in FindRoute")
+		return fmt.Errorf("directions: %w", err)
 	}
 	c.JSON(http.StatusOK, gin.H{"data": &resp[0]})
+	return nil
 }
