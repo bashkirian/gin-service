@@ -34,7 +34,7 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 
 	for rows.Next() {
 		var bank models.Bank
-		if err = rows.Scan(&bank.ID, &bank.Latitude, &bank.Longitude); err != nil {
+		if err = rows.Scan(&bank.ID, &bank.Name, &bank.Latitude, &bank.Longitude); err != nil {
 			return nil, err
 		}
 
@@ -49,7 +49,7 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 }
 
 func GetBank(id string) (*models.Bank, error) {
-	query := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
+	query := `SELECT id, salepointname, latitude, longitude FROM bank.banks WHERE id = $1`
 	var res *models.Bank
 	err := models.DB.QueryRow(query, id).Scan(&res) 
 	if err != nil {

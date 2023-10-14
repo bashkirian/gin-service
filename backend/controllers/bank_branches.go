@@ -30,7 +30,7 @@ func FindBanks(c *gin.Context) {
 // GET /branches/:id
 // Find bank branch
 func FindBank(c *gin.Context) {
-	bank, err := repo.GetBank(c, c.Param("id"))
+	bank, err := repo.GetBank(c.Param("id"))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})

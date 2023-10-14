@@ -13,7 +13,12 @@ func main() {
 	fmt.Println("OK")
 
 	// Connect to database
-	models.ConnectDatabase(models.ConnectionConfig{})
+	models.ConnectDatabase(models.ConnectionConfig{
+		Host: "localhost", 
+		Port: 5432, 
+		User: "postgres", 
+		Password: "12345", 
+		DBName: "goservice"})
 	models.MigrateDatabase()
 	// Routes
 	// Banks

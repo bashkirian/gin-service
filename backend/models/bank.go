@@ -1,7 +1,10 @@
 package models
 
+import (
+	"github.com/google/uuid"
+)
 type Bank struct {
-	ID int
+	ID uuid.UUID `json:"id"`
 	Name string `json:"salePointName" db:"salePointName"`
 	Address string `json:"address" db:"address"`
 	Status string `json:"status" db:"status"`
