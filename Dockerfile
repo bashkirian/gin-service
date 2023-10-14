@@ -1,4 +1,4 @@
-FROM docker.io/golang:1.20-alpine as build
+FROM docker.io/golang:1.21.3-alpine as build
 
 WORKDIR /app
 

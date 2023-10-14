@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/bashkirian/gin-service/controllers"
 	"github.com/bashkirian/gin-service/models"
+	"github.com/bashkirian/gin-service/repo"
 	"github.com/gin-gonic/gin"
 	"os"
 	"strconv"
@@ -23,16 +24,18 @@ func main() {
 	if err != nil {
 		fmt.Println("populate: %w", err)
 	}
-	err = models.ConnectDatabase(models.ConnectionConfig{
+
+	conf := repo.ConnectionConfig{
 		Host:     os.Getenv("db_host"),
 		Port:     port,
 		User:     os.Getenv("db_user"),
 		Password: os.Getenv("db_password"),
 		DBName:   os.Getenv("db_name"),
-	})
-	if err != nil {
-		print(err)
 	}
+	if err = repo.ConnectDatabase(conf); err != nil {
+		panic(err)
+	}
+
 	// Routes
 	r.GET("/branches", controllers.FindBanks)
 	r.GET("/branches/:id", controllers.FindBank)

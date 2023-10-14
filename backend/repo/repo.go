@@ -91,7 +91,7 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 func GetBank(id string) (*models.Bank, error) {
 	query := `SELECT id, salepointname, latitude, longitude FROM bank.banks WHERE id = $1`
 	var res *models.Bank
-	err := models.DB.QueryRow(query, id).Scan(&res)
+	err := db.QueryRow(query, id).Scan(&res)
 	if err != nil {
 		return nil, err
 	} else {

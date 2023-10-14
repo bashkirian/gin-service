@@ -3,6 +3,7 @@ package repo
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"time"
 )
 
@@ -14,6 +15,10 @@ type ConnectionConfig struct {
 	User     string
 	Password string
 	DBName   string
+}
+
+func Storage() *sql.DB {
+	return db
 }
 
 func ConnectDatabase(conf ConnectionConfig) error {
