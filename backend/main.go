@@ -17,18 +17,22 @@ func main() {
 	// Connect to database
 	port, err := strconv.Atoi(os.Getenv("db_port"))
 	if err != nil {
-		print(fmt.Errorf("cant parse port: %w", err))
+		fmt.Println("cant parse port: %w", err)
 	}
-
-	models.ConnectDatabase(models.ConnectionConfig{
+	err = models.PopulateDatabase()
+	if err != nil {
+		fmt.Println("populate: %w", err)
+	}
+	err = models.ConnectDatabase(models.ConnectionConfig{
 		Host:     os.Getenv("db_host"),
 		Port:     port,
 		User:     os.Getenv("db_user"),
 		Password: os.Getenv("db_password"),
 		DBName:   os.Getenv("db_name"),
 	})
-
-	models.MigrateDatabase()
+	if err != nil {
+		print(err)
+	}
 	// Routes
 	r.GET("/branches", controllers.FindBanks)
 	r.GET("/branches/:id", controllers.FindBank)
@@ -39,9 +43,4 @@ func main() {
 	r.POST("/clients/", controllers.InsertClient)
 	// Run the server
 	r.Run(":" + os.Getenv("app_port"))
-}
-
-type request struct {
-	a string `json: "a"`
-	b string `json: "b"`
 }

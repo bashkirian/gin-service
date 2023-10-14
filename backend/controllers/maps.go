@@ -27,7 +27,7 @@ func FindRoute(c *gin.Context) {
 	destination += ", "
 	destination += points.MapPoints[1].Longtitude
 	cont, _ := maps.NewClient(maps.WithAPIKey(apiKey))
-	r := &maps.DirectionsRequest{
+	r := &maps.DirectionsRequest {
 		Origin:      origin,
 		Destination: destination,
 	}
