@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"github.com/bashkirian/gin-service/controllers"
 	"github.com/bashkirian/gin-service/models"
 	"github.com/gin-gonic/gin"
@@ -13,12 +14,7 @@ func main() {
 	fmt.Println("OK")
 
 	// Connect to database
-	models.ConnectDatabase(models.ConnectionConfig{
-		Host: "localhost", 
-		Port: 5432, 
-		User: "postgres", 
-		Password: "12345", 
-		DBName: "goservice"})
+	models.ConnectDatabase(models.ConnectionConfig{})
 	models.MigrateDatabase()
 	// Routes
 	// Banks
@@ -30,5 +26,5 @@ func main() {
 	// Map
 	r.GET("/map/route", controllers.FindRoute)
 	// Run the server
-	r.Run()
+	r.Run(":" + os.Getenv("app_port"))
 }
