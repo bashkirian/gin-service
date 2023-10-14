@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/bashkirian/gin-service/models"
 	"fmt"
+	"database/sql"
 )
 
 // GET /branches
@@ -15,7 +16,7 @@ func FindBanks(c *gin.Context) error {
 	var banks []*models.Bank
 	rows, err := models.DB.Query("SELECT id, salepointname, latitude, longitude FROM banks;") 
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return fmt.Errorf("%w", err)
 	}
 	for rows.Next() {
@@ -41,22 +42,11 @@ func FindBank(c *gin.Context) error {
 	// Get model if exist
 	var bank *models.Bank
 	selectStatement := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
-	rows, err := models.DB.Query(selectStatement, c.Param("id")) 
+	err := models.DB.QueryRow(selectStatement, c.Param("id")).Scan(bank)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		return fmt.Errorf("select bank: %w", err)
-	}
-	for rows.Next() {
-		b := new(models.Bank)
-		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return fmt.Errorf("scan bank: %w", err)
-		}
-		bank = b
-		if rows.Err() != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return fmt.Errorf("rows: %w", err)
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+            return fmt.Errorf("bank %s: unknown album", c.Param("id"))
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bank})
