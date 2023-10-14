@@ -3,24 +3,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.0 (Ubuntu 16.0-1.pgdg22.04+1)
--- Dumped by pg_dump version 16.0 (Ubuntu 16.0-1.pgdg22.04+1)
-
 GRANT ALL ON schema public TO postgres;
-
-SET client_encoding = 'UTF8';
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
---
 
 CREATE SCHEMA IF NOT EXISTS public;
 
 ALTER SCHEMA public OWNER TO pg_database_owner;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
---
 
 COMMENT ON SCHEMA public IS 'standard public schema';
 
