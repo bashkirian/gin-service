@@ -19,6 +19,7 @@ func main() {
 	if err != nil {
 		print(fmt.Errorf("cant parse port: %w", err))
 	}
+
 	models.ConnectDatabase(models.ConnectionConfig{
 		Host:     os.Getenv("db_host"),
 		Port:     port,
@@ -26,6 +27,7 @@ func main() {
 		Password: os.Getenv("db_password"),
 		DBName:   os.Getenv("db_name"),
 	})
+
 	models.MigrateDatabase()
 	// Routes
 	r.GET("/branches", controllers.FindBanks)
@@ -33,6 +35,13 @@ func main() {
 	//r.POST("branches/:id/review", controllers.CreateReview)
 	// Map
 	r.GET("/map/route", controllers.FindRoute)
+	r.GET("/clients/:id", controllers.GetClientInfo)
+	r.POST("/clients/", controllers.InsertClient)
 	// Run the server
 	r.Run(":" + os.Getenv("app_port"))
+}
+
+type request struct {
+	a string `json: "a"`
+	b string `json: "b"`
 }
