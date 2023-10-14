@@ -13,8 +13,6 @@ func main() {
 
 	fmt.Println("OK")
 
-	// Connect to database
-	models.ConnectDatabase(models.ConnectionConfig{})
 	models.MigrateDatabase()
 	// Routes
 	// Banks
