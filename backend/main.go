@@ -19,14 +19,23 @@ func main() {
 	if err != nil {
 		print(fmt.Errorf("cant parse port: %w", err))
 	}
-	models.ConnectDatabase(models.ConnectionConfig{
+	err = models.PopulateDatabase()
+	if err != nil {
+		print(fmt.Errorf("populate: %w", err))
+	}
+	if err == nil {
+		print("OKOKOKOK")
+	}
+	err = models.ConnectDatabase(models.ConnectionConfig{
 		Host:     os.Getenv("db_host"),
 		Port:     port,
 		User:     os.Getenv("db_user"),
 		Password: os.Getenv("db_password"),
 		DBName:   os.Getenv("db_name"),
 	})
-	models.MigrateDatabase()
+	if err != nil {
+		print(err)
+	}
 	// Routes
 	r.GET("/branches", controllers.FindBanks)
 	r.GET("/branches/:id", controllers.FindBank)
