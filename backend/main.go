@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"github.com/bashkirian/gin-service/controllers"
 	"github.com/bashkirian/gin-service/models"
 	"github.com/gin-gonic/gin"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -13,16 +14,25 @@ func main() {
 
 	fmt.Println("OK")
 
+	// Connect to database
+	port, err := strconv.Atoi(os.Getenv("db_port"))
+	if err != nil {
+		print(fmt.Errorf("cant parse port: %w", err))
+	}
+	models.ConnectDatabase(models.ConnectionConfig{
+		Host:     os.Getenv("db_host"),
+		Port:     port,
+		User:     os.Getenv("db_user"),
+		Password: os.Getenv("db_password"),
+		DBName:   os.Getenv("db_name"),
+	})
 	models.MigrateDatabase()
 	// Routes
-	// Banks
 	r.GET("/branches", controllers.FindBanks)
 	r.GET("/branches/:id", controllers.FindBank)
 	//r.POST("branches/:id/review", controllers.CreateReview)
-	// Services
-	r.POST("/services", controllers.InsertService)
 	// Map
 	r.GET("/map/route", controllers.FindRoute)
 	// Run the server
-	r.Run(":" + os.Getenv("app_port"))
+	r.Run()
 }
