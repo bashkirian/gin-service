@@ -1,6 +1,8 @@
 package models
 
+import "github.com/google/uuid"
+
 type BankService struct {
-	BankID    int
-	ServiceID int
+	BankID    uuid.UUID
+	ServiceID uuid.UUID
 }

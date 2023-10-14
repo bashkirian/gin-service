@@ -1,9 +1,11 @@
 package models
 
+import "github.com/google/uuid"
+
 type Review struct {
-	ID     int   `json:"id"`
-	BankID int   `json:"bank_id"`
-	Content string `json:"content"`
+	ID      uuid.UUID `json:"id"`
+	BankID  uuid.UUID `json:"bank_id"`
+	Content string    `json:"content"`
 }
 
 type ReviewPost struct {
