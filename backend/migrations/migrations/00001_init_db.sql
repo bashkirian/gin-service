@@ -1,5 +1,5 @@
 -- +goose Up
-CREATE SCHEMA IF NOT EXISTS bank;
+CREATE SCHEMA bank;
 
 GRANT ALL ON schema bank TO root;
 

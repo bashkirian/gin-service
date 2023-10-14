@@ -15,8 +15,8 @@ services:
     build: .
     ports:
       - "12121:12121"
-#    depends_on:
-#      - db
+    depends_on:
+      - db
     environment:
       app_port: '12121'
       db_host: db
