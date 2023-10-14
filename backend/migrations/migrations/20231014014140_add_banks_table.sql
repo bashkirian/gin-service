@@ -16,8 +16,6 @@ SET client_encoding = 'UTF8';
 
 CREATE SCHEMA IF NOT EXISTS public;
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 ALTER SCHEMA public OWNER TO pg_database_owner;
 
 --
