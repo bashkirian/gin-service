@@ -1,7 +1,6 @@
 package models
 
 type BankService struct {
-	BankID     int
-	ServiceID  int
-	Service Service
+	BankID    int
+	ServiceID int
 }
