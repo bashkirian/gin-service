@@ -7,6 +7,7 @@ import './App.css';
 
 function App() {
   const [selectPosition, setSelectPosition] = useState(null);
+  const [listPlace, setListPlace] = React.useState([]);
 
   // console.log(selectPosition);
   return (
@@ -15,10 +16,11 @@ function App() {
         <Header />
       </div>
       <div className='App-map'>
-        <Maps selectPosition={selectPosition} />
+        <Maps selectPosition={selectPosition} listPlace={listPlace} />
       </div>
       <div className='App-search'>
-        <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition} />
+        <SearchBox selectPosition={selectPosition} setSelectPosition={setSelectPosition}
+         listPlace={listPlace} setListPlace={setListPlace} />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Button, Divider } from "@mui/material";
+// import axios from 'axios'
 
 import './SearchBox.css'
 
@@ -13,63 +14,80 @@ const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?q=135+pil
 //     format: 'json',
 //     addressdetails: 'addressdetails'
 // };
+// const fileJson = "./atms.json";
 
 export default function SearchBox(props) {
-    const { selectPosition, setSelectPosition } = props;
+    // SelectPosition потом передаётся наверх для передачи в компоненту Map
+    // В listPlace заносятся все адреса в listPlace
+    const { selectPosition, setSelectPosition, listPlace, setListPlace } = props;
 
+    // Нигде не используется
     const [selectedIndex, setSelectedIndex] = React.useState(1);
+    // Формально используется при принятии jsonа
     const [searchText, setSearchText] = React.useState("");
-    const [listPlace, setListPlace] = React.useState([]);
 
-    const handleListItemClick = (
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        index: number,
-    ) => {
-        setSelectedIndex(index);
-        console.log('click');
-    };
+    // Используется для отображения 'Загрузка...'
+    // const [isLoaded, setIsLoaded] = React.useState(false);
+    // Заносятся все адреса в listPlace
+    // const [listPlace, setListPlace] = React.useState([]);
+
+    // const handleListItemClick = (
+    //     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    //     index: number,
+    // ) => {
+    //     setSelectedIndex(index);
+    //     console.log('click');
+    // };
 
     return (
         <div>
-            <Button 
-            variant="contained"
-            color="primary"
-            onClick={() => {
-                const params = {
-                    q: searchText,
-                    format: "json",
-                    addressdetails: 1,
-                    polygon_geojson: 0,
-                };
-                const queryString = new URLSearchParams(params).toString();
-                const requestOptions = {
-                    method: "GET",
-                    redirect: "follow",
-                };
-                fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
-                .then((response) => response.text())
-                .then((result) => {
-                    //
-                    console.log(JSON.parse(result));
-                    //
-                    setListPlace(JSON.parse(result));
-                })
-                .catch((err) => console.log("err: ", err));
-            }}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                    const params = {
+                        q: searchText,
+                        format: "json",
+                        addressdetails: 1,
+                        polygon_geojson: 0,
+                    };
+                    const queryString = new URLSearchParams(params).toString();
+                    const requestOptions = {
+                        method: "GET",
+                        redirect: "follow",
+                    };
+
+                    fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
+                        .then((response) => response.text())
+                        .then((result) => {
+                            // setIsLoaded(true);
+                            //
+                            console.log(JSON.parse(result));
+                            //
+                            setListPlace(JSON.parse(result));
+                        })
+                        .catch((err) => {
+                            // setIsLoaded(true);
+                            console.log("err: ", err);
+                        });
+                }}>
                 Search
             </Button>
             <List component="nav" aria-label="main mailbox folders">
+                {/* Выводим адреса
+                Каждый адрес имеет кликабельное поле с описанием и иконку */}
                 {listPlace.map((item) => {
                     return (
                         <div key={item?.osm_id}>
                             <ListItemButton
-                                // selected={selectedIndex === 0}
+                                selected={selectedIndex === 0}
                                 onClick={(event) => {
                                     setSelectPosition(item);
-                                    handleListItemClick(event, 0);
+                                    // handleListItemClick(event, 0);
                                 }
-                            }
+                                }
                             >
+
                                 <ListItemIcon>
                                     <img src="./location.png" alt='' />
                                 </ListItemIcon>
@@ -78,6 +96,7 @@ export default function SearchBox(props) {
                         </div>
                     )
                 })}
+
                 <Divider />
             </List>
         </div>
