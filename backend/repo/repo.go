@@ -6,6 +6,7 @@ import (
 	"github.com/bashkirian/gin-service/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
+	_ "net/http"
 )
 
 func InsertService(ctx *gin.Context, service models.Service) error {
@@ -47,17 +48,13 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 	return res, nil
 }
 
-func GetBank(ctx context.Context, id int) (models.Bank, error) {
+func GetBank(ctx *gin.Context, id string) (*models.Bank, error) {
 	query := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
-	var res models.Bank
-	err := models.DB.QueryRow(query, id).Scan(res)
+	var res *models.Bank
+	err := models.DB.QueryRow(query, id).Scan(&res) 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-			return
-		} else {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
+		return nil, err
+	} else {
+		return res, nil
 	}
 }
