@@ -1,20 +1,10 @@
 -- +goose Up
---
--- PostgreSQL database dump
---
 
 GRANT ALL ON schema public TO postgres;
 
 CREATE SCHEMA IF NOT EXISTS public;
 
 ALTER SCHEMA public OWNER TO pg_database_owner;
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 CREATE TABLE public.banks (
     id UUID NOT NULL DEFAULT uuid_generate_v1(),
