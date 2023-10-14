@@ -29,7 +29,7 @@ CREATE TABLE public.banks (
 ALTER TABLE public.banks OWNER TO postgres;
 
 CREATE TABLE public.clients (
-    id UUID NOT NULL DEFAULT uuid_generate_v1(),
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
     latitude numeric,
     longitude numeric,
     CONSTRAINT idc_tbl PRIMARY KEY (id)
@@ -39,7 +39,7 @@ CREATE TABLE public.clients (
 ALTER TABLE public.clients OWNER TO postgres;
 
 CREATE TABLE public.reviews (
-    id UUID NOT NULL DEFAULT uuid_generate_v1(),
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
     bank_id UUID,
     content text,
     CONSTRAINT idr_tbl PRIMARY KEY (id),
@@ -52,7 +52,7 @@ CREATE TABLE public.reviews (
 ALTER TABLE public.reviews OWNER TO postgres;
 
 CREATE TABLE public.services (
-    id UUID NOT NULL DEFAULT uuid_generate_v1(),
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
     description text,
     CONSTRAINT idss_tbl PRIMARY KEY (id)
 );
