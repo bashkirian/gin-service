@@ -29,6 +29,7 @@
   grid-row-start: 2;
   height: 100vh;
   /* text-align: center; */
+  /* z-index: 0; */
 }
 
 .App-search {
@@ -36,4 +37,7 @@
   grid-row-start: 2;
   height: 100vh;
   text-align: center;
+  /* border-radius: 15px; */
+  /* opacity: 5; */
+  /* z-index: 100; */
 }
