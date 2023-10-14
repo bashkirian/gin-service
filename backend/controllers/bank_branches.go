@@ -3,6 +3,7 @@ package controllers
 import (
 	_ "fmt"
 	"github.com/bashkirian/gin-service/models"
+	"github.com/bashkirian/gin-service/repo"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	_ "strconv"
@@ -13,31 +14,23 @@ import (
 // Get all bank branches
 func FindBanks(c *gin.Context) {
 	// Get model if exist
-	var banks []*models.Bank
-	rows, err := models.DB.QueryContext(c, "SELECT id, salepointname, latitude, longitude FROM bank.banks;")
-	if err != nil {
-		return
-	}
-	for rows.Next() {
-		b := new(models.Bank)
-		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
-		if err != nil {
+	var banks []models.Bank
+	var err error
+	if banks, err = repo.GetBanks(c); err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
-		banks = append(banks, b)
-	}
-	if rows.Err() != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	c.JSON(http.StatusOK, gin.H{"data": banks})
 }
 
 // GET /branches/:id
 // Find bank branch
 func FindBank(c *gin.Context) {
-	// Get model if exist
-	var bank *models.Bank
-	selectStatement := `SELECT id, salepointname, latitude, longitude FROM banks WHERE id = $1`
-	err := models.DB.QueryRow(selectStatement, c.Param("id")).Scan(bank)
+	bank, err := repo.GetBank(c, c.Param("id"))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
