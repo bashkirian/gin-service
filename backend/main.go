@@ -17,14 +17,11 @@ func main() {
 	// Connect to database
 	port, err := strconv.Atoi(os.Getenv("db_port"))
 	if err != nil {
-		print(fmt.Errorf("cant parse port: %w", err))
+		fmt.Println("cant parse port: %w", err)
 	}
 	err = models.PopulateDatabase()
 	if err != nil {
-		print(fmt.Errorf("populate: %w", err))
-	}
-	if err == nil {
-		print("OKOKOKOK")
+		fmt.Println("populate: %w", err)
 	}
 	err = models.ConnectDatabase(models.ConnectionConfig{
 		Host:     os.Getenv("db_host"),

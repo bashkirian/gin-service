@@ -39,7 +39,6 @@ func FindBank(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		// internal error
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bank})
 }

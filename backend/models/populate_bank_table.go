@@ -20,7 +20,7 @@ func PopulateDatabase() error {
 	}
 	var banks_temp []BankTemp
 	if err = json.Unmarshal([]byte(offices), &banks_temp); err != nil {
-		panic(err)
+		return err
 	}
 
 	var banks []Bank
