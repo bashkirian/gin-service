@@ -14,25 +14,21 @@ import (
 func FindBanks(c *gin.Context) {
 	// Get model if exist
 	var banks []*models.Bank
-	rows, err := models.DB.Query("SELECT id, salepointname, latitude, longitude FROM bank.banks;")
+	rows, err := models.DB.QueryContext(c, "SELECT id, salepointname, latitude, longitude FROM bank.banks;")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	for rows.Next() {
 		b := new(models.Bank)
 		err = rows.Scan(&b.ID, &b.Name, &b.Latitude, &b.Longitude)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		banks = append(banks, b)
 	}
 	if rows.Err() != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": banks})
 }
 
 // GET /branches/:id
@@ -46,8 +42,10 @@ func FindBank(c *gin.Context) {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
-		// internal error
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bank})
 }
