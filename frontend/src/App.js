@@ -12,9 +12,9 @@ function App() {
   // console.log(selectPosition);
   return (
     <div className='App'>
-      <div className='App-header'>
+      {/* <div className='App-header'>
         <Header />
-      </div>
+      </div> */}
       <div className='App-map'>
         <Maps selectPosition={selectPosition} listPlace={listPlace} />
       </div>

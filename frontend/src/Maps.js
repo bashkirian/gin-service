@@ -22,7 +22,7 @@ function ResetCenterView(props) {
     useEffect(() => {
         if (selectPosition) {
             map.setView(
-                L.latLng(selectPosition?.lat, selectPosition?.lon),
+                L.latLng(selectPosition?.latitude, selectPosition?.longitude),
                 map.getZoom(),
                 {
                     animate: true
@@ -55,7 +55,7 @@ export default function Maps(props) {
 
             {/* Расположение банкоматов */}
             {listPlace.map((item) => {
-                const locationSelection = [item?.lat, item?.lon];
+                const locationSelection = [item?.latitude, item?.longitude];
                 // console.log(locationSelection);
                 return (
                     selectPosition && (

@@ -3,8 +3,8 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Button, Divider } from "@mui/material";
-// import axios from 'axios'
+import { Avatar, Button, Divider, Icon, SvgIcon } from "@mui/material";
+import axios from 'axios'
 
 import './SearchBox.css'
 
@@ -41,38 +41,64 @@ export default function SearchBox(props) {
 
     return (
         <div>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                    const params = {
-                        q: searchText,
-                        format: "json",
-                        addressdetails: 1,
-                        polygon_geojson: 0,
-                    };
-                    const queryString = new URLSearchParams(params).toString();
-                    const requestOptions = {
-                        method: "GET",
-                        redirect: "follow",
-                    };
+            <div className="container">
+                <div className="centered-element">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            // const params = {
+                            //     q: searchText,
+                            //     format: "json",
+                            //     addressdetails: 1,
+                            //     polygon_geojson: 0,
+                            // };
+                            // const queryString = new URLSearchParams(params).toString();
+                            // const requestOptions = {
+                            //     method: "GET",
+                            //     redirect: "follow",
+                            // };
 
-                    fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
-                        .then((response) => response.text())
-                        .then((result) => {
-                            // setIsLoaded(true);
-                            //
-                            console.log(JSON.parse(result));
-                            //
-                            setListPlace(JSON.parse(result));
-                        })
-                        .catch((err) => {
-                            // setIsLoaded(true);
-                            console.log("err: ", err);
-                        });
-                }}>
-                Search
-            </Button>
+                            // fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
+                            //     .then((response) => response.text())
+                            //     .then((result) => {
+                            //         // setIsLoaded(true);
+                            //         //
+                            //         console.log(JSON.parse(result));
+                            //         //
+                            //         setListPlace(JSON.parse(result));
+                            //     })
+                            //     .catch((err) => {
+                            //         // setIsLoaded(true);
+                            //         console.log("err: ", err);
+                            //     });
+
+                            const fetchData = () => {
+                                fetch('/branches')
+                                .then(res => res.json())
+                                .then(
+                                    data => {
+                                        setListPlace(data.data);
+                                        console.log(data.data);
+                                    }
+                                )
+                            }
+
+                            fetchData()
+                        }}>
+                        Показать на карте
+                    </Button>
+                </div>
+                <div className="right-element">
+                    <a href="https://www.vtb.ru/" target="_blank">
+                        <Avatar 
+                        alt='' 
+                        src='./vtblogo.png' 
+                        variant="square" 
+                        sx={{ width: 72, height: 72 }}/>
+                    </a>
+                </div>
+            </div>
             <List component="nav" aria-label="main mailbox folders">
                 {/* Выводим адреса
                 Каждый адрес имеет кликабельное поле с описанием и иконку */}
@@ -91,7 +117,7 @@ export default function SearchBox(props) {
                                 <ListItemIcon>
                                     <img src="./location.png" alt='' />
                                 </ListItemIcon>
-                                <ListItemText primary={item?.display_name} />
+                                <ListItemText primary={item?.salePointName} />
                             </ListItemButton>
                         </div>
                     )
