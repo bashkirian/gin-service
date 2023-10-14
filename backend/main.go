@@ -34,5 +34,5 @@ func main() {
 	// Map
 	r.GET("/map/route", controllers.FindRoute)
 	// Run the server
-	r.Run()
+	r.Run(":" + os.Getenv("app_port"))
 }
