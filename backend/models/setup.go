@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"time"
 )
 
 var DB *sql.DB
@@ -18,7 +19,9 @@ type ConnectionConfig struct {
 
 func ConnectDatabase(conf ConnectionConfig) error {
 	// connection string
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s", conf.Host, conf.Port, conf.User, conf.Password, conf.DBName)
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", conf.Host, conf.Port, conf.User, conf.Password, conf.DBName)
+
+	time.Sleep(1 * time.Second)
 
 	// open database
 	var err error

@@ -8,7 +8,13 @@ RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
 
 COPY ./backend .
 
-RUN go build -o bin ./main.go
+#RUN go build -o bin/app ./main.go
+RUN go build -o bin/migr ./migrations/main.go
+
+FROM scratch
+
+COPY --from=build /app/bin/migr /app/bin/migr
+COPY backend/migrations/migrations migration_db
 
 
-CMD ["/app/bin"]
+CMD ["/app/bin/migr"]

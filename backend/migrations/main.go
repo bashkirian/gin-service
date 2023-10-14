@@ -32,7 +32,7 @@ func run() error {
 		return fmt.Errorf("conn db: %w", err)
 	}
 
-	if err := goose.Run("up", models.DB, "migration/migrations"); err != nil {
+	if err := goose.Run("up", models.DB, "migration_db"); err != nil {
 		return err
 	}
 

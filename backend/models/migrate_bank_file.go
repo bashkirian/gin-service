@@ -1,8 +1,8 @@
 package models
 
 import (
-    "encoding/json"
-    "fmt"
+	"encoding/json"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "log"
 	"os"
@@ -15,14 +15,14 @@ func MigrateDatabase() error {
 		return fmt.Errorf("readfile: %w", err)
 	}
 	db, err := sqlx.Connect("postgres", "host = localhost user=postgres dbname=goservice password=12345 sslmode=disable")
-    if err != nil {
+	if err != nil {
 		return fmt.Errorf("postgres connection: %w", err)
 	}
 	var banks []Bank
-    if err = json.Unmarshal([]byte(offices), &banks); err != nil {
-        return fmt.Errorf("json unmarshal: %w", err)
-    }
-    query := `INSERT INTO banks(salePointName, address, status, rko, officeType, salePointFormat, suoAvailability, hasRamp, latitude, longitude, metroStation, distance, kep, myBranch) 
+	if err = json.Unmarshal([]byte(offices), &banks); err != nil {
+		return fmt.Errorf("json unmarshal: %w", err)
+	}
+	query := `INSERT INTO bank.banks(salePointName, address, status, rko, officeType, salePointFormat, suoAvailability, hasRamp, latitude, longitude, metroStation, distance, kep, myBranch) 
           VALUES(:salePointName, :address, :status, :rko, :officeType, :salePointFormat, :suoAvailability, :hasRamp, :latitude, :longitude, :metroStation, :distance, :kep, :myBranch)
 		  ON CONFLICT DO NOTHING`
 

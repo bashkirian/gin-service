@@ -1,19 +1,19 @@
 package controllers
 
 import (
+	"fmt"
+	"github.com/bashkirian/gin-service/models"
+	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
+	"googlemaps.github.io/maps"
 	"net/http"
 	_ "strconv"
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/bashkirian/gin-service/models"
-	"googlemaps.github.io/maps"
-	"golang.org/x/net/context"
 )
 
 const apiKey = "AIzaSyDZ-FFbuQ0xhk1ArrZW8zZ8LdpUuIDsD0g"
 
 // GET /map/route
-// Get route from two points and distance 
+// Get route from two points and distance
 func FindRoute(c *gin.Context) error {
 	var points models.MapPointPayload
 	if err := c.ShouldBindJSON(&points); err != nil {
