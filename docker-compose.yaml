@@ -13,6 +13,7 @@ services:
 
   app:
     build: .
+
     ports:
       - "12121:12121"
     environment:
