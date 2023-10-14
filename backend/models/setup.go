@@ -1,41 +1,36 @@
 package models
 
 import (
-	"fmt"
-	"log"
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq"
-)
-
-const (
-	host = "localhost"
-	port = 5432
-	user = "postgres"
-	password = "12345"
-	dbname = "goservice"
 )
 
 var DB *sql.DB
 
-func ConnectDatabase() {
-	// connection string
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-         
-    // open database
-	var err error
-    DB, err = sql.Open("postgres", psqlconn)
-    CheckError(err)
- 
-    // check DB
-    err = DB.Ping()
-    CheckError(err)
-	
-    fmt.Println("Connected!")
-
+type ConnectionConfig struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string
 }
- 
-func CheckError(err error) {
-    if err != nil {
-        log.Fatalln(err)
-    }
+
+func ConnectDatabase(conf ConnectionConfig) error {
+	// connection string
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s", conf.Host, conf.Port, conf.User, conf.Password, conf.DBName)
+
+	// open database
+	var err error
+	DB, err = sql.Open("postgres", psqlconn)
+	if err != nil {
+		return fmt.Errorf("open: %w", err)
+	}
+
+	// check DB
+	if err = DB.Ping(); err != nil {
+		return fmt.Errorf("ping: %w", err)
+	}
+
+	return nil
 }

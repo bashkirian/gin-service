@@ -1,17 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"github.com/bashkirian/gin-service/controllers"
 	"github.com/bashkirian/gin-service/models"
-
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
 
+	fmt.Println("OK")
+
 	// Connect to database
-	models.ConnectDatabase()
+	models.ConnectDatabase(models.ConnectionConfig{})
 	models.MigrateDatabase()
 	// Routes
 	r.GET("/branches", controllers.FindBanks)

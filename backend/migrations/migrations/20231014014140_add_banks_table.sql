@@ -36,7 +36,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.banks (
-    id UUID NOT NULL DEFAULT uuid_generate_v1(),
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
     salepointname text NOT NULL,
     address text NOT NULL,
     status text NOT NULL,
