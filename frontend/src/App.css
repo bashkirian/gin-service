@@ -1,0 +1,39 @@
+.App {
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr;
+  grid-template-rows: 1fr auto;
+
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-header {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+
+  background-color: #3a3c3d;
+  /* min-height: 100vh; */
+  /* display: flex;
+  flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* font-size: calc(10px + 2vmin); */
+  /* color: white; */
+  text-align: right;
+}
+
+.App-map {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  height: 100vh;
+  /* text-align: center; */
+}
+
+.App-search {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  height: 100vh;
+  text-align: center;
+}

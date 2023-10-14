@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16
+    volumes:
+      - ./db:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_PASSWORD=12345
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+  app:
+    build: .
+    ports:
+      - "12121:12121"
+    environment:
+      app_port: '12121'
+      db_host: db
+      db_port: 5432
+      db_user: root
+      db_password: 1
+      db_database: defaultdb
+
+
