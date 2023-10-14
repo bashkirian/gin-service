@@ -16,10 +16,6 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
---
--- Name: banks; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.banks (
     id UUID NOT NULL DEFAULT uuid_generate_v1(),
     salepointname text NOT NULL,
@@ -42,10 +38,6 @@ CREATE TABLE public.banks (
 
 ALTER TABLE public.banks OWNER TO postgres;
 
---
--- Name: clients; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.clients (
     id UUID NOT NULL DEFAULT uuid_generate_v1(),
     latitude numeric,
@@ -55,10 +47,6 @@ CREATE TABLE public.clients (
 
 
 ALTER TABLE public.clients OWNER TO postgres;
-
---
--- Name: reviews; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.reviews (
     id UUID NOT NULL DEFAULT uuid_generate_v1(),
@@ -72,10 +60,6 @@ CREATE TABLE public.reviews (
 
 
 ALTER TABLE public.reviews OWNER TO postgres;
-
---
--- Name: services; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.services (
     id UUID NOT NULL DEFAULT uuid_generate_v1(),
@@ -92,10 +76,6 @@ CREATE TABLE public.banks_services (
     services_id UUID REFERENCES public.services(id),
     CONSTRAINT idbs_tbl PRIMARY KEY (bank_id, services_id)
 );
-
---
--- PostgreSQL database dump complete
---
 
 -- +goose Down
 DROP TABLE public.banks_services;
