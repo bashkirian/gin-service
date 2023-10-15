@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"database/sql"
-	"fmt"
 	_ "fmt"
 	"github.com/bashkirian/gin-service/models"
 	"github.com/bashkirian/gin-service/repo"
@@ -17,7 +16,6 @@ func FindBanks(c *gin.Context) {
 	// Get model if exist
 	var banks []models.Bank
 	var err error
-	fmt.Println("here")
 	if banks, err = repo.GetBanks(c); err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})

@@ -62,7 +62,7 @@ SELECT latitude, longitude FROM bank.clients WHERE id = $1;`
 
 func GetBanks(ctx context.Context) ([]models.Bank, error) {
 	const query = `
-SELECT id, salepointname, latitude, longitude FROM bank.banks;`
+SELECT id, salepointname, latitude, longitude, address FROM bank.banks;`
 
 	rows, err := db.QueryContext(ctx, query)
 	if err != nil {
@@ -74,7 +74,7 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 
 	for rows.Next() {
 		var bank models.Bank
-		if err = rows.Scan(&bank.ID, &bank.Name, &bank.Latitude, &bank.Longitude); err != nil {
+		if err = rows.Scan(&bank.ID, &bank.Name, &bank.Latitude, &bank.Longitude, &bank.Address); err != nil {
 			return nil, err
 		}
 
@@ -91,7 +91,7 @@ SELECT id, salepointname, latitude, longitude FROM bank.banks;`
 func GetBank(id string) (*models.Bank, error) {
 	query := `SELECT id, salepointname, latitude, longitude FROM bank.banks WHERE id = $1`
 	var res *models.Bank
-	err := db.QueryRow(query, id).Scan(&res)
+	err := db.QueryRow(query, id).Scan(&res.ID, &res.Name, &res.Latitude, &res.Longitude)
 	if err != nil {
 		return nil, err
 	} else {
