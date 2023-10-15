@@ -13,7 +13,7 @@ const userIcon = L.icon({
     iconSize: [38, 38]
 });
 
-const position = [51.505, -0.09]
+const position = [55.8, 37.5]
 
 function ResetCenterView(props) {
     const { selectPosition } = props;
@@ -22,7 +22,7 @@ function ResetCenterView(props) {
     useEffect(() => {
         if (selectPosition) {
             map.setView(
-                L.latLng(selectPosition?.latitude, selectPosition?.longitude),
+                L.latLng(selectPosition?.Latitude, selectPosition?.Longitude),
                 map.getZoom(),
                 {
                     animate: true
@@ -55,13 +55,13 @@ export default function Maps(props) {
 
             {/* Расположение банкоматов */}
             {listPlace.map((item) => {
-                const locationSelection = [item?.latitude, item?.longitude];
+                const locationSelection = [item?.Latitude, item?.Longitude];
                 // console.log(locationSelection);
                 return (
                     selectPosition && (
                         <Marker key={item?.osm_id} position={locationSelection} icon={icon}>
                             <Popup>
-                                Marker
+                                {item?.Address}
                             </Popup>
                         </Marker>
                     )

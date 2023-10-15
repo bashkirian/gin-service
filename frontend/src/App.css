@@ -7,29 +7,13 @@
   color: white;
 }
 
-.App-header {
-  grid-column-start: 1;
-  grid-column-end: -1;
-  grid-row-start: 1;
-
-  background-color: #3a3c3d;
-  /* min-height: 100vh; */
-  /* display: flex;
-  flex-direction: column; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* font-size: calc(10px + 2vmin); */
-  /* color: white; */
-  text-align: right;
-}
-
 .App-map {
   grid-column-start: 1;
-  grid-column-end: 3;
+  grid-column-end: -1;
   grid-row-start: 2;
   height: 100vh;
   /* text-align: center; */
-  /* z-index: 0; */
+  z-index: 0;
 }
 
 .App-search {
@@ -37,7 +21,26 @@
   grid-row-start: 2;
   height: 100vh;
   text-align: center;
-  /* border-radius: 15px; */
-  /* opacity: 5; */
-  /* z-index: 100; */
+  background-image: linear-gradient(to bottom, #303030, #898989);
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  opacity: 0.95;
+  z-index: 100;
+
+  overflow-y: auto;
+}
+
+.App-search::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+  /* margin-right: 10px; */
+}
+
+.App-search::-webkit-scrollbar-thumb {
+  background-color: #868686;
+  border-radius: 8px;
+}
+
+.App-search::-webkit-scrollbar-track {
+  background-color: #EFEFEF;
 }

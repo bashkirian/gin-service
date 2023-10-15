@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from './Header';
 import Maps from './Maps';
 import SearchBox from './SearchBox';
 
@@ -9,12 +8,8 @@ function App() {
   const [selectPosition, setSelectPosition] = useState(null);
   const [listPlace, setListPlace] = React.useState([]);
 
-  // console.log(selectPosition);
   return (
     <div className='App'>
-      {/* <div className='App-header'>
-        <Header />
-      </div> */}
       <div className='App-map'>
         <Maps selectPosition={selectPosition} listPlace={listPlace} />
       </div>
