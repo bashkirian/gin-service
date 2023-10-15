@@ -30,26 +30,73 @@ export default function SearchBox(props) {
                                 .then(
                                     data => {
                                         setListPlace(data.data);
-                                        // console.log(data.data);
                                     }
                                 )
                             }
 
-                            fetchData()
+                            fetchData();
+
+                            // const fetchData = () => {
+                            //     return new Promise((resolve, reject) => {
+                            //         fetch('/branches')
+                            //             .then(res => res.json())
+                            //             .then(
+                            //                 data => {
+                            //                     setListPlace(data.data);
+                            //                 }
+                            //             )
+
+                            //         setTimeout(() => {
+                            //             const data = "Done";
+                            //             resolve(data);
+                            //         }, 1000)
+                            //     });
+                            // }
+                            // fetchData().then((data) => {
+                            //     // console.log(data);
+                            //     // console.log(listPlace);
+
+
+                            // })
+
                         }}>
                         Показать на карте
                     </Button>
                 </div>
                 <div className="right-element">
                     <a href="https://www.vtb.ru/" target="_blank" rel="noreferrer">
-                        <Avatar 
-                        alt='' 
-                        src='./vtblogo.png' 
-                        variant="square"
-                        sx={{ width: 128, height: 64 }}/>
+                        <Avatar
+                            alt=''
+                            src='./vtblogo.png'
+                            variant="square"
+                            sx={{ width: 128, height: 64 }} />
                     </a>
                 </div>
             </div>
+            {listPlace.map((item) => {
+                return (
+                    setSelectPosition(item)
+                );
+            })}
+            {/* {listPlace.sort((a, b) => {
+                const Lata = a?.Latitude;
+                const Lona = a?.Longitude;
+                const Latb = b?.Latitude;
+                const Lonb = b?.Longitude;
+
+                const pos = [55.8, 37.5]
+
+                var first = Math.sqrt(Math.pow(pos[0] - Lata, 2) + Math.pow(pos[1] - Lona, 2));
+                var second = Math.sqrt(Math.pow(pos[0] - Latb, 2) + Math.pow(pos[1] - Lonb, 2));
+
+                if (first < second) {
+                    return -1;
+                } else if (first > second) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            })} */}
             <List component="nav" aria-label="main mailbox folders">
                 {/* Выводим адреса
                 Каждый адрес имеет кликабельное поле с описанием и иконку */}
